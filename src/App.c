@@ -117,12 +117,28 @@ static void activate(GtkApplication *app, gpointer user_data)
     static Item i3 = {"Misti Doi", 40};
     static Item i4 = {"Rosgulla", 40};
     static Item i5 = {"Butter Chicken", 40};
+    static Item i6= {"Chiken Roll", 90};
+    static Item i7= {"Fried Rice", 70};
+    static Item i8= {"Noodles", 40};
+    static Item i9= {"Pasta", 50};
+    static Item i10= {"Coke", 20};
+    static Item i11= {"Pepsi", 20};
+    static Item i12= {"Sprite", 20};
+    static Item i13= {"Fanta", 20};
 
     GtkWidget *iBurgur = Items(&i1);
     GtkWidget *pizza = Items(&i2);
     GtkWidget *Misti = Items(&i3);
     GtkWidget *Rosgulla = Items(&i4);
     GtkWidget *Butterc = Items(&i5);
+    GtkWidget *ChikenR = Items(&i6);
+    GtkWidget *FriedR = Items(&i7);
+    GtkWidget *Noodles = Items(&i8);
+    GtkWidget *Pasta = Items(&i9);
+    GtkWidget *Coke = Items(&i10);
+    GtkWidget *Pepsi = Items(&i11);
+    GtkWidget *Sprite = Items(&i12);
+    GtkWidget *Fanta = Items(&i13);
 
     gtk_grid_set_row_spacing(GTK_GRID(grid), 20);
     gtk_grid_set_column_spacing(GTK_GRID(grid), 20);
@@ -131,6 +147,14 @@ static void activate(GtkApplication *app, gpointer user_data)
     gtk_grid_attach(GTK_GRID(grid), Misti, 2, 0, 1, 1);
     gtk_grid_attach(GTK_GRID(grid), Rosgulla, 3, 0, 1, 1);
     gtk_grid_attach(GTK_GRID(grid), Butterc, 4, 0, 1, 1);
+    gtk_grid_attach(GTK_GRID(grid), ChikenR, 0, 1, 1, 1);
+    gtk_grid_attach(GTK_GRID(grid), FriedR, 1, 1, 1, 1);
+    gtk_grid_attach(GTK_GRID(grid), Noodles, 2, 1, 1, 1);
+    gtk_grid_attach(GTK_GRID(grid), Pasta, 3, 1, 1, 1);
+    gtk_grid_attach(GTK_GRID(grid), Coke, 4, 1, 1, 1);
+    gtk_grid_attach(GTK_GRID(grid), Pepsi, 0, 2, 1, 1);
+    gtk_grid_attach(GTK_GRID(grid), Sprite, 1, 2, 1, 1);
+    gtk_grid_attach(GTK_GRID(grid), Fanta, 2, 2, 1, 1);
 
     // Create navbar label
     label = gtk_label_new("Food Camp Menu");
