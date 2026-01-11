@@ -56,6 +56,7 @@ GtkCssProvider *load_css()
                                       ".price_label {font-weight:bold; font-size:36px;  margin: 10px; padding: 10px;  }"
                                       ".total_label {font-weight:bold; font-size:36px;  margin: 10px; padding: 10px;  }"
                                       ".checkout {color:black; border-radius: 5px; padding: 6px 12px;  }"
+                                      ".clear {color:black; border-radius: 5px; padding: 6px 12px;  }"
 
     );
 

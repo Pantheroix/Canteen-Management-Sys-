@@ -1,6 +1,7 @@
 #ifndef MENUPAGE_H
 #define MENUPAGE_H
 #include "../backend/CartitemLL.h"
+#include "../backend/OrderQueue.h"
 int total = 0;
 GtkWidget *cart_item_box;
 GtkWidget *totallabel;
@@ -52,6 +53,33 @@ static void Total(GtkWidget *btn, gpointer user_data)
     update_total();
 };
 static void fcheckout(GtkWidget *btn, gpointer user_data)
+{
+    if (!head)
+        return;
+
+    // Create independent order copy
+    CartItem *orderCopy = clone_cart();
+
+    // Push order into queue
+    enqueue(orderCopy);
+
+    // Clear UI cart safely
+    free_list();
+    total = 0;
+    update_total();
+
+    // Clear cart panel widgets
+    GtkWidget *box = GTK_WIDGET(user_data);
+    GtkWidget *child = gtk_widget_get_first_child(box);
+    while (child)
+    {
+        GtkWidget *next = gtk_widget_get_next_sibling(child);
+        gtk_box_remove(GTK_BOX(box), child);
+        child = next;
+    }
+}
+
+static void clear_list(GtkWidget *btn, gpointer user_data)
 {
     total = 0;
     GtkWidget *box = GTK_WIDGET(user_data);
@@ -111,7 +139,6 @@ GtkWidget *menu_page()
     scroll = gtk_scrolled_window_new();
     gtk_widget_set_vexpand(scroll, TRUE);
     gtk_widget_set_hexpand(scroll, TRUE);
-    // (we will add scroll into a horizontal content box below)
 
     // create a menu box (this will be the scrolled child)
     Menu_box = gtk_box_new(GTK_ORIENTATION_VERTICAL, 10);
@@ -120,7 +147,7 @@ GtkWidget *menu_page()
     gtk_widget_set_valign(Menu_box, GTK_ALIGN_START);
     gtk_scrolled_window_set_child(GTK_SCROLLED_WINDOW(scroll), Menu_box);
 
-    /* create a priceBar (sidebar) */
+    /* create a priceBar */
     GtkWidget *priceBar;
     priceBar = gtk_box_new(GTK_ORIENTATION_VERTICAL, 10);
     gtk_widget_set_size_request(priceBar, 320, 800);
@@ -128,7 +155,7 @@ GtkWidget *menu_page()
     gtk_widget_set_valign(priceBar, GTK_ALIGN_START);
     gtk_widget_add_css_class(priceBar, "priceBar");
 
-    // Now create a horizontal content box to hold scroll (menu) and priceBar (sidebar)
+    // Now create a horizontal content box to hold scroll
     GtkWidget *content_hbox = gtk_box_new(GTK_ORIENTATION_HORIZONTAL, 10);
     gtk_widget_set_hexpand(content_hbox, TRUE);
     gtk_widget_set_vexpand(content_hbox, TRUE);
@@ -141,17 +168,20 @@ GtkWidget *menu_page()
     totallabel = gtk_label_new("Total:");
     cart_item_box = gtk_box_new(GTK_ORIENTATION_VERTICAL, 5);
     GtkWidget *checkout = gtk_button_new_with_label("CHECKOUT");
+    GtkWidget *clear = gtk_button_new_with_label("Clear");
     gtk_widget_set_halign(price_label, GTK_ALIGN_CENTER);
     gtk_widget_set_valign(price_label, GTK_ALIGN_START);
     gtk_widget_set_halign(totallabel, GTK_ALIGN_CENTER);
     gtk_widget_set_valign(totallabel, GTK_ALIGN_END);
     gtk_box_append(GTK_BOX(priceBar), checkout);
+    gtk_box_append(GTK_BOX(priceBar), clear);
     gtk_box_append(GTK_BOX(priceBar), price_label);
     gtk_box_append(GTK_BOX(priceBar), totallabel);
     gtk_box_append(GTK_BOX(priceBar), cart_item_box);
 
     /*checkout btn signal*/
     g_signal_connect(checkout, "clicked", G_CALLBACK(fcheckout), cart_item_box);
+    g_signal_connect(clear, "clicked", G_CALLBACK(clear_list), cart_item_box);
 
     // create a grid box inside Menu_box
     GtkWidget *grid = gtk_grid_new();
@@ -164,7 +194,7 @@ GtkWidget *menu_page()
     gtk_grid_set_row_spacing(GTK_GRID(grid), 20);
     gtk_grid_set_column_spacing(GTK_GRID(grid), 20);
     int col = 0, row = 0;
-    for (int i = 0; i < 13; i++)
+    for (int i = 0; i < sizeof(items) / sizeof(Item); i++)
     {
         GtkWidget *itemBox = Items(&items[i]);
         gtk_grid_attach(GTK_GRID(grid), itemBox, col, row, 1, 1);
@@ -182,6 +212,7 @@ GtkWidget *menu_page()
     gtk_widget_add_css_class(price_label, "price_label");
     gtk_widget_add_css_class(totallabel, "total_label");
     gtk_widget_add_css_class(checkout, "checkout");
+    gtk_widget_add_css_class(clear, "clear");
 
     return box;
 }

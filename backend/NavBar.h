@@ -26,7 +26,7 @@ GtkWidget *show_navbar(GtkWidget *stack, GtkWidget *Menu_page, GtkWidget *Order_
     GtkWidget *btn_box; // Box to align button to the right
     GtkWidget *label;
 
-    // stacking
+    /*stacking*/
 
     gtk_stack_add_named(GTK_STACK(stack), Menu_page, "menu");
     gtk_stack_add_named(GTK_STACK(stack), Order_page, "order");
@@ -34,7 +34,7 @@ GtkWidget *show_navbar(GtkWidget *stack, GtkWidget *Menu_page, GtkWidget *Order_
 
     /*Navbar*/
     navbar = gtk_box_new(GTK_ORIENTATION_VERTICAL, 10);
-    gtk_widget_set_size_request(navbar, -1, 150); // Height only
+    gtk_widget_set_size_request(navbar, -1, 150);
     gtk_widget_set_halign(navbar, GTK_ALIGN_FILL);
     gtk_widget_set_valign(navbar, GTK_ALIGN_START);
     // Create navbar label

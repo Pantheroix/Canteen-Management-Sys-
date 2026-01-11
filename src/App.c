@@ -25,15 +25,19 @@ static void activate(GtkApplication *app, gpointer user_data)
     gtk_window_set_default_size(GTK_WINDOW(window), 900, 700);
 
     GtkWidget *main_box = gtk_box_new(GTK_ORIENTATION_VERTICAL, 10);
+    /*stack*/
     GtkWidget *stack = gtk_stack_new();
+    gtk_stack_set_transition_type(GTK_STACK(stack), GTK_STACK_TRANSITION_TYPE_SLIDE_LEFT_RIGHT);
+    gtk_stack_set_transition_duration(GTK_STACK(stack), 500);
     GtkWidget *Order_page = order_page();
     GtkWidget *History_page = history_page();
     GtkWidget *Menu_page = menu_page();
 
     GtkWidget *navbar = show_navbar(stack, Menu_page, Order_page, History_page);
 
+    /*Add Navbar to the main box*/
     gtk_box_append(GTK_BOX(main_box), navbar);
-
+    /*Add Stack to the main box*/
     gtk_box_append(GTK_BOX(main_box), stack);
 
     // Create the main vertical container
